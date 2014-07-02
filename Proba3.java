@@ -20,7 +20,10 @@ public class Proba3 {
             } else if (input.equals("printTree")) {
                 printTree();
             } else if (input.equals("deleteVertex")) {
-                deleteVertex();
+                System.out.println("numberVertex");
+                int deleteNumber = sc.nextInt();
+                deleteVertex(deleteNumber);
+                printTree();
             } else if (input.equals("test")) {
                 test ();
             } else {
@@ -56,19 +59,17 @@ public class Proba3 {
         printTree();
      }
      
-     private static void deleteVertex() {
-        System.out.println("numberVertex");
-        int deleteNumber = sc.nextInt();
-            if (tree.get(deleteNumber).size() == 3) {
+     private static void deleteVertex(int deleteNumber) {
+        if (tree.get(deleteNumber).size() == 3) {
                 metodDelete(deleteNumber);
-            } else if (tree.get(deleteNumber).size() > 3) {
-                for (int i = 3; i < tree.get(deleteNumber).size(); i++) {
-                    deleteBranch(tree.get(deleteNumber).get(i));
+        } else if (tree.get(deleteNumber).size() > 3) {
+                for (int i = 3; i < tree.get(deleteNumber).size();) {
+                    deleteVertex(tree.get(deleteNumber).get(i));
                 }
                 metodDelete(deleteNumber);
-            } else {
-                System.out.println ("Error Number Vertex");
-            }
+        } else {
+                System.out.println("0_o");
+        }
      }
      
      private static void metodDelete (int delete)   {
@@ -80,37 +81,17 @@ public class Proba3 {
                     int z = tree.get(a).get(b);
                     z--;
                     tree.get(a).set(b, z);
-                    System.out.println("uMenhil");
-                    printTree();
-                    System.out.println(" ");
                 } else if (tree.get(a).get(b) == delete) {
                     tree.get(a).remove(b);
                     b--;
-                    System.out.println("uDalil");
-                    printTree();
-                    System.out.println(" ");
                 } else {
-                        System.out.println("menhe");
+                        
                 }
             }
         }
      }
-       
-     private static void deleteBranch(int Branch) {
-        if (tree.get(Branch).size() == 3) {
-            metodDelete(Branch);
-        } else if (tree.get(Branch).size() > 3)  {
-                for (int i = 3; i < tree.get(Branch).size(); i++) {
-                    deleteBranch(tree.get(Branch).get(i));
-                }
-                metodDelete(Branch);
-        } else {
-            System.out.println("WTF ? 0_o");
-        }
-    }
-    
-            
-    private static void printTree() {
+     
+   private static void printTree() {
         for (int i = 0; i < tree.size(); i++) {
             System.out.println(tree.get(i));
         }
