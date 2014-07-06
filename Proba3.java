@@ -9,7 +9,7 @@ public class Proba3 {
         Scanner sc = new Scanner (System.in);
         System.out.println("Hi");
         while (true) {
-            System.out.println("command: addVertex, printVertex, printTree, deleteVertex or exit");
+            System.out.println("command: addVertex, printVertex, printTree, deleteVertex, rR or exit");
             String input = sc.nextLine();
             if (input.equals("exit")) {
                 break;
@@ -26,6 +26,8 @@ public class Proba3 {
                 printTree();
             } else if (input.equals("test")) {
                 test ();
+            } else if (input.equals("rR")) {
+                rR();
             } else {
                 System.out.println("error");
             }
@@ -105,6 +107,56 @@ public class Proba3 {
         } else {
             System.out.println("does not have a vertex number " +printNumber );
         }
+    }
+    
+    private static void rR () {
+        printTree();
+        System.out.println("NewRoot");
+        int newRoot = sc.nextInt();
+        for (int a = 0; a < tree.size(); a++) {
+            for (int c = 3; c < tree.get(a).size(); c++) {
+                if (tree.get(a).get(c) == newRoot) {
+                    tree.get(a).remove(c);
+                } else {                  
+                }
+            }
+            for (int b = 1; b < tree.get(a).size(); b++) {
+                if (newRoot > tree.get(a).get(b)) {
+                    int z = tree.get(a).get(b);
+                    z++;
+                    tree.get(a).set(b, z);
+                }else {
+                }
+            }
+        }
+        for (int a = 0, b = 2; a < tree.size(); a++) {
+             if (tree.get(a).get(b) == newRoot) {
+                tree.get(a).set(b, 0);
+             } else {
+             }
+        }
+        
+        tree.get(newRoot).set(1, 0);
+        tree.get(newRoot).set(2, 0);
+        tree.get(newRoot).add(3, 1);
+        tree.get(0).set(2,0);
+        printTree();
+        tree.add(0, tree.get(newRoot));
+        System.out.println(newRoot);
+        tree.remove(newRoot+1);
+        System.out.println(newRoot+1);
+        /*for (int a = 0; a < tree.size(); a++) {
+            for (int b = 1; b < tree.get(a).size(); b++) {
+                if (tree.get(a).get(b) >= newRoot+1) {
+                    int z = tree.get(a).get(b);
+                    z--;
+                    tree.get(a).set(b, z);
+                } else {
+                }
+            }
+        }
+        */
+        printTree();
     }
     private static void test () {
       int i = sc.nextInt();
