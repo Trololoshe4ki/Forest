@@ -32,12 +32,59 @@ import java.util.Scanner;
  class Receiver {
     public Receiver() { }
     
-    public void print () {
-     System.out.println("this is work!");
+    public void addVertex () {
+        System.out.println("FatherVertex");
+        int FatherVertex = TestCommand.sc.nextInt();
+        if (FatherVertex < TestCommand.tree.size()) {
+            TestCommand.numberVertex++;
+            ArrayList <Integer> Vertex = new ArrayList <Integer> ();
+            Vertex.add(0, 123456789);
+            Vertex.add(1, TestCommand.numberVertex);
+            Vertex.add(2, FatherVertex);
+            TestCommand.tree.add(Vertex);
+            TestCommand.tree.get(FatherVertex).add(TestCommand.numberVertex);
+        } else if (FatherVertex == 0) {
+          TestCommand.numberVertex++;
+            ArrayList <Integer> Vertex = new ArrayList <Integer> ();
+            Vertex.add(0, 123456789);
+            Vertex.add(1, TestCommand.numberVertex);
+            Vertex.add(2, FatherVertex);
+            TestCommand.tree.add(Vertex);
+        } else{
+            System.out.println("Error Fater Vertex");
+        }
     }
-    public void printdel () {
-        System.out.println("this is work!(delete)");
-    }
+    public void deleteVertex (int deleteNumber) {
+       if (TestCommand.tree.get(deleteNumber).size() == 3) {
+                methodDelete(deleteNumber);
+        } else if (TestCommand.tree.get(deleteNumber).size() > 3) {
+                for (int i = 3; i < TestCommand.tree.get(deleteNumber).size();) {
+                    deleteVertex(TestCommand.tree.get(deleteNumber).get(i));
+                }
+                methodDelete(deleteNumber);
+        } else {
+                System.out.println("0_o");
+        }
+     }
+     
+     private static void methodDelete (int delete)   {
+        TestCommand.tree.remove(delete);
+        TestCommand.numberVertex--;
+        for (int a = 0; a < TestCommand.tree.size() ; a++) {
+            for (int b = 1; b < TestCommand.tree.get(a).size(); b++) {
+                if (TestCommand.tree.get(a).get(b) > delete) {
+                    int z = TestCommand.tree.get(a).get(b);
+                    z--;
+                    TestCommand.tree.get(a).set(b, z);
+                } else if (TestCommand.tree.get(a).get(b) == delete) {
+                    TestCommand.tree.get(a).remove(b);
+                    b--;
+                } else {
+                        
+                }
+            }
+        }
+     }
 }
 //Command for add vertex
  class AddVertexCommand implements Command {
@@ -47,7 +94,7 @@ import java.util.Scanner;
         this.thetest = test;
     }
     public void execute() {
-        thetest.print();
+        thetest.addVertex();
     }
 }
 // Command for delete Vertex
@@ -59,34 +106,35 @@ class DeleteVertexCommand implements Command {
     }
     
     public void execute() {
-        theDelete.printdel(); 
+        theDelete.deleteVertex(deleteNumber); 
     }
 }
     
 //test
 public class TestCommand { 
 
-    private static ArrayList <ArrayList <Integer>> tree = new ArrayList <ArrayList<Integer>> ();
-    //private static ArrayList <Integer> DeadList = new ArrayList <Integer> ();
-    private static Scanner sc = new Scanner (System.in);
-    private static int numberVertex = -1; // для создание новых Vertex
+    public static ArrayList <ArrayList <Integer>> tree = new ArrayList <ArrayList<Integer>> ();
+    public static Scanner sc = new Scanner (System.in);
+    public static int numberVertex = -1; // для создание новых Vertex
       
     public static void main(String[] args) {
                            
-        Receiver R = new Receiver();
+        
+         Receiver R = new Receiver();
         
         Command CDel = new DeleteVertexCommand(R);
         Command CAdd = new AddVertexCommand(R);
         
         Invoker IA = new Invoker(CAdd,CDel);
         
-        IA.addVertex();
-        IA.deleteVertex();
+       
+        
         
         
         Scanner sc = new Scanner (System.in);
         System.out.println("Hi");
         
+       
         
         while (true) {
             System.out.println("command: addVertex, printVertex, printTree, deleteVertex, rR or exit");
@@ -94,15 +142,20 @@ public class TestCommand {
             if (input.equals("exit")) {
                 break;
             } else if (input.equals("addVertex")) {
-                addVertex();
+                IA.addVertex();
+                
+                
+                
             } else if (input.equals("printVertex")) {
                 printVertex();
             } else if (input.equals("printTree")) {
                 printTree();
             } else if (input.equals("deleteVertex")) {
+                
+                
                 System.out.println("numberVertex");
                 int deleteNumber = sc.nextInt();
-                deleteVertex(deleteNumber);
+                IA.deleteVertex(deleteNumber);
                 printTree();
             } else if (input.equals("test")) {
                 test ();
