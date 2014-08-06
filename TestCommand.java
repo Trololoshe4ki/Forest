@@ -10,35 +10,38 @@ import java.util.Scanner;
  interface Command {
     void execute();
 }
+interface CommandDell {
+    void execute (int deleteNumber);
+}
 // the Invoker class
  class Invoker {
     private Command addVertex;
-    private Command deleteVertex;
+    private CommandDell deleteVertex;
     private Command printTree;
     private Command printVertex;
     private Command aR;
     
-    public Invoker (Command addVert, Command deleteVert, Command printT, Command printVert, Command aR) {
+    public Invoker (Command addVert, CommandDell deleteVert, Command printT, Command printV, Command aR) {
         this.addVertex = addVert;
         this.deleteVertex = deleteVert;
         this.printTree = printT;
-        this.printVertex = printVert;
+        this.printVertex = printV;
         this.aR = aR;
     }
     
     public void addVertex() {
         addVertex.execute();
     }
-    public void deleteVertex() {
-        deleteVertex.execute();
+    public void deleteVertex(int deleteNumber) {
+        deleteVertex.execute(deleteNumber);
     }
     public void printTree() {
         printTree.execute();
     }
-    public void printVetrex () {
+    public void printVertex() {
         printVertex.execute(); 
     }
-    public void aR () {
+    public void aR() {
         aR.execute();
     }
         
@@ -75,6 +78,7 @@ import java.util.Scanner;
         for (int i = 0; i < TestCommand.tree.size(); i++) {
             System.out.println(TestCommand.tree.get(i));
         }
+        
     }
     public void printVertex() {
         System.out.println("Number Vertex");
@@ -124,20 +128,19 @@ import java.util.Scanner;
         TestCommand.IA.printTree();
     }   
     
-    public void deleteVertex () {
-        System.out.println("this is doesn't work!");
-      /* 
+    public void deleteVertex (int deleteNumber) {
+       
       if (TestCommand.tree.get(deleteNumber).size() == 3) {
                 methodDelete(deleteNumber);
-        } else if (TestCommand.tree.get(deleteNumber).size() > 3) {
+      } else if (TestCommand.tree.get(deleteNumber).size() > 3) {
                 for (int i = 3; i < TestCommand.tree.get(deleteNumber).size();) {
                     deleteVertex(TestCommand.tree.get(deleteNumber).get(i));
                 }
                 methodDelete(deleteNumber);
-        } else {
+      } else {
                 System.out.println("0_o");
-        }
-     }
+      }
+    }
      
      private static void methodDelete (int delete)   {
         TestCommand.tree.remove(delete);
@@ -157,26 +160,24 @@ import java.util.Scanner;
             }
         }
      }
-     
-     */
 }
-}
+
 //Command for aR
 class ARCommand implements Command {
-    private Receiver theaR;
+    private Receiver theAR;
     
-    public void aRCommand (Receiver aR) {
-        this.theaR = aR;
+    public ARCommand (Receiver aR) {
+        this.theAR = aR;
     }
     public void execute () {
-        theaR.aR();
+        theAR.aR();
    }
 }
 //Command for printVertex
 class PrintVertexCommand implements Command {
     private Receiver thePrintV;
     
-    public void printVertexCommand (Receiver printV) {
+    public PrintVertexCommand (Receiver printV) {
         this.thePrintV = printV;
     }
     public void execute() {
@@ -206,72 +207,67 @@ class AddVertexCommand implements Command {
     }
 }
 // Command for delete Vertex
-class DeleteVertexCommand implements Command {
+class DeleteVertexCommand implements CommandDell {
     private Receiver theDelete;
     
     public DeleteVertexCommand (Receiver delete) {
         this.theDelete = delete;
     }
     
-    public void execute() {
-        theDelete.deleteVertex(); 
+    public void execute(int deleteNumber) {
+        theDelete.deleteVertex(deleteNumber); 
     }
 }
     
 //test
 public class TestCommand { 
-
+    
     public static ArrayList <ArrayList <Integer>> tree = new ArrayList <ArrayList<Integer>> ();
     public static Scanner sc = new Scanner (System.in);
     public static int numberVertex = -1; // для создание новых Vertex
-      
+        
+    public static Receiver R = new Receiver();         
+    public static CommandDell CDel = new DeleteVertexCommand(R);
+    public static Command CAdd = new AddVertexCommand(R);
+    public static Command CPrintT = new PrintTreeCommand(R);
+    public static Command CPrintV = new PrintVertexCommand(R);
+    public static Command CaR = new ARCommand(R);
+    public static Invoker IA = new Invoker(CAdd,CDel,CPrintT,CPrintV,CaR);
+    
     public static void main(String[] args) {
-                           
+         
+         
         
-        Receiver R = new Receiver();
+         
         
-        Command CDel = new DeleteVertexCommand(R);
-        Command CAdd = new AddVertexCommand(R);
-        Command CPrintT = new PrintTreeCommand(R);
-        Command CPrintV = new printVertexCommand(R);
-        Command CaR = new aRCommand(R);
-        
-        Invoker IA = new Invoker(CAdd,CDel,CPrintT,CPrintV,CaR);
-        
-        Scanner sc = new Scanner (System.in);
-        System.out.println("Hi");
-        
-    while (true) {
+        while (true) {
             System.out.println("command: addVertex, printVertex, printTree, deleteVertex, aR(appointment root) or exit ");
             String input = sc.nextLine();
             if (input.equals("exit")) {
                 break;
-            } else if (input.equals("deleteVertex")) {
-                //System.out.println("numberVertex");
-              //  int deleteNumber = sc.nextInt();
-                IA.deleteVertex();
-           } else if (input.equals("addVertex")) {
+            } else if (input.equals("addVertex")) {
                 IA.addVertex();
             } else if (input.equals("printVertex")) {
                 IA.printVertex();
             } else if (input.equals("printTree")) {
                 IA.printTree();
-            /*
+
             } else if (input.equals("deleteVertex")) {
                 System.out.println("numberVertex");
                 int deleteNumber = sc.nextInt();
                 IA.deleteVertex(deleteNumber);
-            */
-           // } else if (input.equals("test")) {
-           //     test ();
+                        
+            //            } else if (input.equals("test")) {
+            //                test ();
             } else if (input.equals("aR")) {
                 IA.aR();
             } else {
-                System.out.println("error");
+                System.out.println(" ");
             }
-         }
-     }
-}
+        }
+    }
+}     
+
      
 
     /*
