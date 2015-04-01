@@ -7,7 +7,7 @@ public class Proba3 {
     private static int numberVertex = -1; // для создание новых Vertex
     public static void main (String [] args) {
         Scanner sc = new Scanner (System.in);
-        System.out.println("Hi");
+        System.out.println("Hello");
         while (true) {
             System.out.println("command: addVertex, printVertex, printTree, deleteVertex, rR or exit");
             String input = sc.nextLine();
